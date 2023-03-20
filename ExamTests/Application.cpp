@@ -149,7 +149,3 @@ void Application::RegisterAdmin()
 	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	std::system("pause");
 }
-
-
-
-//TEST

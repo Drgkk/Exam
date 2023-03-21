@@ -5,6 +5,7 @@
 Application::Application()
 {
 	users.Load();
+	admin.AddUsers(users);
 }
 
 void Application::Menu()

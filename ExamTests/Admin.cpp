@@ -4,6 +4,7 @@
 #include <bitset>
 #include "Function.h"
 #include "Menu.h"
+#include "UsersLogAndPas.h"
 
 Admin::Admin()
 {
@@ -119,6 +120,11 @@ bool Admin::IsExist()
 		return false;
 }
 
+void Admin::AddUsers(UsersLogAndPas& _users)
+{
+	users = &_users;
+}
+
 void Admin::Menu()
 {
 	while (true)
@@ -139,11 +145,87 @@ void Admin::Menu()
 		{
 		case 0:  break;
 		case 1:  break;
-		case 2:  break;
+		case 2: ChangeLoginOrPassword(); break;
 		case 3:  break;
 		case 4: return; break;
 		case 5: std::exit(0); std::system("pause"); break;
 		}
 	}
+}
+
+void Admin::ChangeLoginOrPassword()
+{
+	std::system("cls");
+	SetColor(ConsoleColor::Green, ConsoleColor::Black);
+	std::cout << "\n\n\t\t\t\tChange login or password " << login;
+	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+	int c = Menu::select_vertical({
+		"Change Login",
+		"Change Password",
+		"Exit"
+		}, HorizontalAlignment::Center, 4);
+	switch (c)
+	{
+	case 0: ChangeLogin(); break;
+	case 1: ChangePassword(); break;
+	case 2: return; break;
+	}
+}
+
+void Admin::ChangeLogin()
+{
+	std::string s;
+	std::cout << "Enter your new login: ";
+	std::getline(std::cin, s);
+	if (users->FindLogin(s) != -1)
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Login already exist in users! Try another one!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
+	login = s;
+
+	SetColor(ConsoleColor::Green, ConsoleColor::Black);
+	std::cout << "Login has been succesfully changed to: " << login << "\n";
+	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+	Save();
+	std::system("pause");
+}
+
+void Admin::ChangePassword()
+{
+	std::string s;
+	std::cout << "Enter your old password: ";
+	std::getline(std::cin, s);
+	if (password != s)
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "That's not the old password!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
+	std::cout << "Enter your new password: ";
+	std::getline(std::cin, s);
+	std::string s2;
+	std::cout << "Repeat your new password: ";
+	std::getline(std::cin, s2);
+	if (s2 != s)
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Passwords do not match\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
+	password = s;
+
+	SetColor(ConsoleColor::Green, ConsoleColor::Black);
+	std::cout << "Password has been succesfully changed" << "\n";
+	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+	Save();
+	std::system("pause");
 }
 

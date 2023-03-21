@@ -1,9 +1,11 @@
 #pragma once
 #include <iostream>
+#include "UsersLogAndPas.h"
 
 
 class Admin
 {
+	UsersLogAndPas* users;
 	std::string login;
 	std::string password;
 
@@ -17,7 +19,11 @@ public:
 	void SetPassword(std::string p);
 	void print();
 	bool IsExist();
+	void AddUsers(UsersLogAndPas& _users);
 
 	void Menu();
+	void ChangeLoginOrPassword();
+	void ChangeLogin();
+	void ChangePassword();
 };
 

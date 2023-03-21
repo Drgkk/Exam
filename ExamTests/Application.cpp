@@ -115,8 +115,42 @@ void Application::Register()
 		std::getline(std::cin, c);
 		std::cout << "Enter your address: ";
 		std::getline(std::cin, d);
-		std::cout << "Enter your phone: ";
-		std::getline(std::cin, e);
+		do
+		{
+			std::cout << "Enter your phone: ";
+			std::getline(std::cin, e);
+
+			if (e[0] != '+')
+			{
+				std::cout << "Phone number should start at +, try again!\n";
+				continue;
+			}
+
+			if (e.length() != 13)
+			{
+				std::cout << "Phone number can contain only 12 digits, try again!\n";
+				continue;
+			}
+
+			for (size_t p = 1; p < e.length(); p++)
+			{
+				if (!std::isdigit(e[p]))
+				{
+					std::cout << "Phone number should contain digits, try again!\n";
+					continue;
+				}
+			}
+
+			if (e[1] != '3' && e[2] != '8' && e[3] != '0')
+			{
+				std::cout << "Phone number should start at +380, try again!\n";
+				continue;
+			}
+
+			break;
+
+		} while (true);
+
 		users.AddUser(a, b, c, d, e);
 		users.Save();
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);

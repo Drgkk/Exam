@@ -22,8 +22,15 @@ public:
 	void AddUsers(UsersLogAndPas& _users);
 
 	void Menu();
+
 	void ChangeLoginOrPassword();
 	void ChangeLogin();
 	void ChangePassword();
+
+	void ManipulateUsers();
+	void ShowUsers();
+	void CreateUser();
+	void DeleteUser();
+	void ModifyUser();
 };
 

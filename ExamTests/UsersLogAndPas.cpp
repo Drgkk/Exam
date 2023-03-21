@@ -136,10 +136,26 @@ void UsersLogAndPas::print()
 	for (size_t i = 0; i < users.GetSize(); i++)
 	{
 
-		std::cout << users.Brackets(i, 0) << " " << users.Brackets(i, 1) << " " << users.Brackets(i, 2) << " " << users.Brackets(i, 3) << " " << users.Brackets(i, 4) << std::endl;
+		std::cout << i << " " << users.Brackets(i, 0) << " " << users.Brackets(i, 1) << " " << users.Brackets(i, 2) << " " << users.Brackets(i, 3) << " " << users.Brackets(i, 4) << std::endl;
 
 		std::cout << std::endl;
 	}
+}
+
+void UsersLogAndPas::DeleteUser(int index)
+{
+	users.DeleteElement(index);
+	Save();
+}
+
+int UsersLogAndPas::GetSize()
+{
+	return users.GetSize();
+}
+
+void UsersLogAndPas::ModifyValueInIndex(int i, int g, std::string s)
+{
+	users.GetArray()[i][g] = s;
 }
 
 

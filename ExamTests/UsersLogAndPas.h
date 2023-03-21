@@ -15,5 +15,8 @@ public:
 	int FindPassword(std::string s);
 	DoubleArray& GetUsers();
 	void print();
+	void DeleteUser(int index);
+	int GetSize();
+	void ModifyValueInIndex(int i, int g, std::string s);
 };
 

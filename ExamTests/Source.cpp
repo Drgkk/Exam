@@ -15,7 +15,7 @@ int main()
 	app.Menu();*/
 
 	SectionsArray sa;
-	/*Creator* creator = new OneChoiceQuestionCreator;
+	Creator* creator = new OneChoiceQuestionCreator;
 	Question* constr = creator->create();
 
 	sa.PushSection("Section 1");
@@ -26,6 +26,7 @@ int main()
 	sa.PushAnswer("Answer 2", 0, 0, 0);
 	sa.PushAnswer("Answer 3", 0, 0, 0);
 	sa.PushAnswer("Answer 4", 0, 0, 0);
+	sa.SetRightAnswer(0, 0, 0, 2);
 
 	std::cout << std::endl;
 	sa.PushSection("Section 2");
@@ -51,16 +52,16 @@ int main()
 	sa.PushAnswer("Answer 2", 1, 1, 0);
 	sa.PushAnswer("Answer 3", 1, 1, 0);
 	sa.SetRightAnswer(1, 1, 0, 1);
-	sa.SetRightAnswer(1, 1, 0, 2);
+	sa.SetRightAnswer(1, 1, 0, 0);
 	creator = new ManualChoiceQuestionCreator;
 	constr = creator->create();
 	sa.PushQuestion("Question 2", 1, 1, constr);
 	sa.SetRightAnswer(1, 1, 1, 1);
 
 	
-	sa.Save();*/
+	sa.Save();
 
-	sa.Load();
+	//sa.Load();
 	sa.Print();
 
 	return 0;

@@ -173,7 +173,7 @@ void Test::PrintTest(int indexQ)
 
 void Test::Print()
 {
-	std::cout << testName << std::endl;
+	std::cout << "|----" << testName << std::endl;
 	for (size_t i = 0; i < questions.size(); i++)
 	{
 		questions.at(i)->Print();

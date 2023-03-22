@@ -22,12 +22,12 @@ void Question::PushAnswer(std::string name)
 
 void OneChoiceQuestion::Print()
 {
-	std::cout << questionName << std::endl;
+	std::cout << "     |----" << questionName << std::endl;
 	for (size_t i = 0; i < answers.size(); i++)
 	{
 		if (i == ra)
 			SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
-		std::cout << answers.at(i) << std::endl;
+		std::cout << "          |----" << answers.at(i) << std::endl;
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	}
 }
@@ -155,9 +155,9 @@ void OneChoiceQuestion::Load(std::ifstream& in)
 
 void ManualChoiceQuestion::Print()
 {
-	std::cout << questionName << std::endl;
+	std::cout << "     |----" << questionName << std::endl;
 	SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
-	std::cout << answer << std::endl;
+	std::cout << "          |----" << answer << std::endl;
 	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 }
 
@@ -285,12 +285,12 @@ void ManualChoiceQuestion::Load(std::ifstream& in)
 
 void MultipleChoiceQuestion::Print()
 {
-	std::cout << questionName << std::endl;
+	std::cout << "     |----" << questionName << std::endl;
 	for (size_t i = 0; i < answers.size(); i++)
 	{
 		if (std::find(sra.begin(), sra.end(), i) != sra.end())
 			SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
-		std::cout << answers.at(i) << std::endl;
+		std::cout << "          |----" << answers.at(i) << std::endl;
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	}
 }

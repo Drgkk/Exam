@@ -8,6 +8,7 @@ class Question
 protected:
 	std::string questionName;
 	std::vector<std::string> answers;
+	int mark = 0;
 
 public:
 	void SetNameQuestion(std::string name);
@@ -16,7 +17,21 @@ public:
 	std::vector<std::string>& GetAnswers();
 	virtual void Print() = 0;
 	virtual void SetRightAnswer(int _ra) = 0;
+	virtual void SetUserAnswer(int _ua, std::string s, std::vector<int> _sua) = 0;
+	virtual void DelRightAnswer(int _ra) = 0;
 	void PushAnswer(std::string name);
+	void DeleteAnswer(int index);
+	std::string GetName();
+	virtual std::string GetType() = 0;
+	virtual std::vector<int>& GetSRA() = 0;
+	void SetMark(int m);
+	int GetMark();
+
+	virtual int GetRightAnswerSCQ() = 0;
+	virtual std::string GetRightAnswerMaCQ() = 0;
+	virtual std::vector<int> GetRightAnswerMuCQ() = 0;
+
+	virtual int GetUserMark() = 0;
 };
 
 
@@ -25,13 +40,25 @@ public:
 class OneChoiceQuestion : public Question
 {
 
-	int ra;
+	int ra = 0;
+	int ua;
 
 public:
 	virtual void Print() override;
 	virtual void SetRightAnswer(int _ra) override;
+	virtual void SetUserAnswer(int _ua, std::string s, std::vector<int> _sua);
+	virtual void DelRightAnswer(int _ra) override;
 	virtual void Save(std::ofstream& out) override;
 	virtual void Load(std::ifstream& in) override;
+	virtual std::string GetType() override;
+	virtual std::vector<int>& GetSRA() override;
+	int GetRightAnswer();
+
+	virtual int GetRightAnswerSCQ();
+	virtual std::string GetRightAnswerMaCQ();
+	virtual std::vector<int> GetRightAnswerMuCQ();
+
+	virtual int GetUserMark();
 };
 
 
@@ -40,12 +67,24 @@ public:
 class ManualChoiceQuestion : public Question
 {
 	std::string answer;
+	std::string uanswer;
+
 
 public:
 	virtual void Print() override;
 	virtual void SetRightAnswer(int _ra) override;
+	void SetUserAnswer(int _ua, std::string s, std::vector<int> _sua);
+	virtual void DelRightAnswer(int _ra) override;
 	virtual void Save(std::ofstream& out) override;
 	virtual void Load(std::ifstream& in) override;
+	virtual std::string GetType() override;
+	virtual std::vector<int>& GetSRA() override;
+
+	virtual int GetRightAnswerSCQ();
+	virtual std::string GetRightAnswerMaCQ();
+	virtual std::vector<int> GetRightAnswerMuCQ();
+
+	virtual int GetUserMark();
 };
 
 
@@ -53,10 +92,21 @@ public:
 class MultipleChoiceQuestion : public Question
 {
 	std::vector<int> sra;
+	std::vector<int> sua;
 
 public:
 	virtual void Print() override;
 	virtual void SetRightAnswer(int _ra) override;
+	virtual void SetUserAnswer(int _ua, std::string s, std::vector<int> _sua);
+	virtual void DelRightAnswer(int _ra) override;
 	virtual void Save(std::ofstream& out) override;
 	virtual void Load(std::ifstream& in) override;
+	virtual std::string GetType() override;
+	virtual std::vector<int>& GetSRA() override;
+
+	virtual int GetRightAnswerSCQ();
+	virtual std::string GetRightAnswerMaCQ();
+	virtual std::vector<int> GetRightAnswerMuCQ();
+
+	virtual int GetUserMark();
 };

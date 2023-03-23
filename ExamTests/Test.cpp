@@ -9,6 +9,11 @@ void Test::AddName(std::string name)
 	testName = name;
 }
 
+void Test::QuestionDelete(int index)
+{
+	questions.erase(questions.begin() + index);
+}
+
 void Test::Save(std::ofstream& out)
 {
 	std::string s;
@@ -185,4 +190,9 @@ void Test::PushQuestion(Question* questionType, std::string name)
 	std::unique_ptr<Question> temp(questionType);
 	temp->SetNameQuestion(name);
 	questions.push_back(std::move(temp));
+}
+
+std::string Test::GetName()
+{
+	return testName;
 }

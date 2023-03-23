@@ -11,6 +11,7 @@ class Sections
 
 public:
 	void AddName(std::string name);
+	void DeleteTest(int index);
 	std::string GetName() const;
 	void Save(std::ofstream& out);
 	void Load(std::ifstream& in);

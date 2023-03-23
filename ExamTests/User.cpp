@@ -1,5 +1,15 @@
 #include "User.h"
 
+User::User()
+{
+	ssa = new SectionsArray();
+}
+
+void User::SetSectionsArray(SectionsArray& _sa)
+{
+	sa = &_sa;
+}
+
 void User::WriteInformation(std::string login, std::string pass, std::string pib, std::string address, std::string phoneN, int row)
 {
 	userInformation.push_back(login);
@@ -18,4 +28,14 @@ std::string User::GetUserInformation(int index)
 void User::clear()
 {
 	userInformation.clear();
+}
+
+SectionsArray* User::GetSA()
+{
+	return sa;
+}
+
+SectionsArray* User::GetSSA()
+{
+	return ssa;
 }

@@ -6,12 +6,14 @@
 #include "User.h"
 #include "UserInterface.h"
 #include "Admin.h"
+#include "SectionsArray.h";
 
 class Application
 {
 	UsersLogAndPas users;
 	UserInterface UI;
 	Admin admin;
+	SectionsArray sa;
 
 public: 
 	Application();

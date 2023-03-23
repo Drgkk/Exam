@@ -8,6 +8,11 @@ void Sections::AddName(std::string name)
 	sectionName = name;
 }
 
+void Sections::DeleteTest(int index)
+{
+	tests.erase(tests.begin() + index);
+}
+
 std::string Sections::GetName() const
 {
 	return sectionName;

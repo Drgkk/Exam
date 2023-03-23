@@ -6,6 +6,8 @@ Application::Application()
 {
 	users.Load();
 	admin.AddUsers(users);
+	sa.Load();
+	admin.AddSections(sa);
 }
 
 void Application::Menu()
@@ -78,6 +80,7 @@ void Application::Login()
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 		UI.AddUserLogAndPas(users);
 		UI.GetUser().WriteInformation(users.GetUsers().Brackets(k, 0), users.GetUsers().Brackets(k, 1), users.GetUsers().Brackets(k, 2), users.GetUsers().Brackets(k, 3), users.GetUsers().Brackets(k, 4), k);
+		UI.AddSectionsArray(sa);
 		std::system("pause");
 		UI.Menu();
 		UI.GetUser().clear();

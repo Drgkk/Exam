@@ -12,6 +12,26 @@ void SectionsArray::PushSection(std::string name)
 	sections.push_back(std::move(temp));
 }
 
+void SectionsArray::DeleteSection(int indexS)
+{
+	sections.erase(sections.begin() + indexS);
+}
+
+void SectionsArray::DeleteTest(int indexS, int indexT)
+{
+	sections.at(indexS)->DeleteTest(indexT);
+}
+
+void SectionsArray::DeleteQuestion(int indexS, int indexT, int indexQ)
+{
+	sections.at(indexS)->GetTests().at(indexT)->QuestionDelete(indexQ);
+}
+
+void SectionsArray::DeleteAnswer(int indexS, int indexT, int indexQ, int indexA)
+{
+	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->DeleteAnswer(indexA);
+}
+
 void SectionsArray::AddTest(std::string name, int indexS, int indexT)
 {
 	sections.at(indexS)->GetTests().at(indexT)->AddName(name);
@@ -49,6 +69,16 @@ void SectionsArray::PushAnswer(std::string name, int indexS, int indexT, int ind
 void SectionsArray::SetRightAnswer(int indexS, int indexT, int indexQ, int _ra)
 {
 	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->SetRightAnswer(_ra);
+}
+
+void SectionsArray::SetUserAnswer(int indexS, int indexT, int indexQ, int _ra, std::string s, std::vector<int> _sua)
+{
+	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->SetUserAnswer(_ra, s, _sua);
+}
+
+void SectionsArray::DeleteRightAnswer(int indexS, int indexT, int indexQ, int _ra)
+{
+	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->DelRightAnswer(_ra);
 }
 
 std::vector<std::unique_ptr<Sections>>& SectionsArray::GetSections()
@@ -129,4 +159,66 @@ void SectionsArray::Print()
 	{
 		sections.at(i)->Print();
 	}
+}
+
+std::unique_ptr<Sections>& SectionsArray::GetSection(int indexS)
+{
+	return sections.at(indexS);
+}
+
+std::unique_ptr<Test>& SectionsArray::GetTest(int indexS, int indexT)
+{
+	return sections.at(indexS)->GetTests().at(indexT);
+}
+
+std::unique_ptr<Question>& SectionsArray::GetQuestion(int indexS, int indexT, int indexQ)
+{
+	return sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ);
+}
+
+std::string& SectionsArray::GetAnswer(int indexS, int indexT, int indexQ, int indexA)
+{
+	return sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetAnswers().at(indexA);
+}
+
+int SectionsArray::GetSingleChoiceRA(int indexS, int indexT, int indexQ)
+{
+	return sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetRightAnswerSCQ();
+}
+
+std::vector<int> SectionsArray::GetMultipleChoiceRA(int indexS, int indexT, int indexQ)
+{
+	return sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetRightAnswerMuCQ();
+}
+
+std::string SectionsArray::GetManualChoiceRA(int indexS, int indexT, int indexQ)
+{
+	return sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetRightAnswerMaCQ();
+}
+
+void SectionsArray::PushFullSection(std::unique_ptr<Sections>& section)
+{
+	sections.push_back(std::move(section));
+}
+
+void SectionsArray::PrintResults(int indexS, int indexT)
+{
+
+	for (size_t i = 0; i < sections.at(indexS)->GetTests().at(indexT)->GetQuestions().size(); i++)
+	{
+		std::cout << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetName() << " Mark: ";
+		std::cout << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetUserMark();
+		std::cout << "/" << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetMark() << std::endl;
+	}
+	
+}
+
+int SectionsArray::GetB()
+{
+	return b;
+}
+
+void SectionsArray::SetB(int _b)
+{
+	b = _b;
 }

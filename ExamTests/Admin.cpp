@@ -329,6 +329,9 @@ void Admin::CreateUser()
 
 		users->AddUser(a, b, c, d, e);
 		users->Save();
+
+		UI->AddUser(a, b, c, d, e);
+
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
 		std::cout << "You've been successfully registered as user!\n";
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
@@ -353,6 +356,8 @@ void Admin::DeleteUser()
 		return;
 	}
 	users->DeleteUser(i);
+
+	UI->DeleteUser(i);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "User succesfully deleted!" << "\n";
@@ -436,6 +441,7 @@ void Admin::ModifyUser()
 	}
 	
 	users->ModifyValueInIndex(i, g - 1, s);
+	UI->ModifyValueInIndex(i, g - 1, s);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "User succesfully modified!" << "\n";
@@ -869,6 +875,27 @@ void Admin::ChangeTests()
 
 void Admin::SaveTests()
 {
+	int markSum = 0;
+	for (size_t i = 0; i < sa->GetSections().size(); i++)
+	{
+		for (size_t j = 0; j < sa->GetSections().at(i)->GetTests().size(); j++)
+		{
+			for (size_t a = 0; a < sa->GetSections().at(i)->GetTests().at(j)->GetQuestions().size(); a++)
+			{
+				markSum += sa->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->GetMark();
+			}
+			if (markSum != 12)
+			{
+				SetColor(ConsoleColor::Red, ConsoleColor::Black);
+				std::cout << "This cannot be saved! One of your tests has a total sum of marks not equal to 12, please fix it in order to save!" << "\n";
+				SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+				std::system("pause");
+				return;
+			}
+			markSum = 0;
+		}
+	}
+
 	sa->Save();
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
@@ -1483,5 +1510,10 @@ void Admin::ChangeMark()
 	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	std::system("pause");
 	std::system("cls");
+}
+
+void Admin::SetUI(UserInterface& _UI)
+{
+	UI = &_UI;
 }
 

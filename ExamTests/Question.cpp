@@ -106,6 +106,14 @@ void OneChoiceQuestion::Save(std::ofstream& out)
 	}
 	out << std::endl;
 
+	s = std::to_string(ua);
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
 	s = std::to_string(mark);
 
 	for (size_t j = 0; j < s.length(); j++)
@@ -194,6 +202,29 @@ void OneChoiceQuestion::Load(std::ifstream& in)
 			}
 			s = a;
 
+			ua = std::stoi(s);
+
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
 			mark = std::stoi(s);
 
 			return;
@@ -241,7 +272,7 @@ std::vector<int> OneChoiceQuestion::GetRightAnswerMuCQ()
 	return std::vector<int>();
 }
 
-int OneChoiceQuestion::GetUserMark()
+float OneChoiceQuestion::GetUserMark()
 {
 	if (ua == ra)
 	{
@@ -251,6 +282,10 @@ int OneChoiceQuestion::GetUserMark()
 	{
 		return 0;
 	}
+}
+
+void OneChoiceQuestion::SetManualAnswer(std::string s)
+{
 }
 
 void OneChoiceQuestion::DelRightAnswer(int _ra)
@@ -317,6 +352,14 @@ void ManualChoiceQuestion::Save(std::ofstream& out)
 	out << std::endl;
 
 	s = answer;
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
+	s = uanswer;
 
 	for (size_t j = 0; j < s.length(); j++)
 	{
@@ -407,6 +450,29 @@ void ManualChoiceQuestion::Load(std::ifstream& in)
 			}
 			s = a;
 
+			uanswer = s;
+
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
 			mark = stoi(s);
 
 			return;
@@ -455,7 +521,7 @@ std::vector<int> ManualChoiceQuestion::GetRightAnswerMuCQ()
 	return std::vector<int>();
 }
 
-int ManualChoiceQuestion::GetUserMark()
+float ManualChoiceQuestion::GetUserMark()
 {
 	if (answer == uanswer)
 	{
@@ -465,6 +531,11 @@ int ManualChoiceQuestion::GetUserMark()
 	{
 		return 0;
 	}
+}
+
+void ManualChoiceQuestion::SetManualAnswer(std::string s)
+{
+	answer = s;
 }
 
 void MultipleChoiceQuestion::Print()
@@ -555,6 +626,25 @@ void MultipleChoiceQuestion::Save(std::ofstream& out)
 	}
 	out << std::endl;
 
+	for (size_t j = 0; j < sua.size(); j++)
+	{
+		s = std::to_string(sua.at(j));
+
+		for (size_t e = 0; e < s.length(); e++)
+		{
+			out << std::bitset<8>(s[e]);
+		}
+		out << std::endl;
+	}
+
+	s = "QMUEtyghbnuijkm";
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
 	s = std::to_string(mark);
 
 	for (size_t j = 0; j < s.length(); j++)
@@ -620,6 +710,34 @@ void MultipleChoiceQuestion::Load(std::ifstream& in)
 
 				if(s != "QMEtyghbnuijkm")
 					sra.push_back(std::stoi(s));
+
+				delete[] temp;
+			}
+
+			while (s != "QMUEtyghbnuijkm")
+			{
+				s.clear();
+				a.clear();
+				t = 0;
+				ti = 0;
+				char* temp = new char[9];
+				ts.clear();
+
+				in >> s;
+
+				while (t < s.size())
+				{
+					s.copy(temp, 8, t);
+					t += 8;
+					temp[8] = '\0';
+					unsigned long t2 = std::bitset<8>(temp).to_ulong();
+					ts = (char)t2;
+					a.append(ts);
+				}
+				s = a;
+
+				if (s != "QMUEtyghbnuijkm")
+					sua.push_back(std::stoi(s));
 
 				delete[] temp;
 			}
@@ -695,17 +813,26 @@ std::vector<int> MultipleChoiceQuestion::GetRightAnswerMuCQ()
 	return sra;
 }
 
-int MultipleChoiceQuestion::GetUserMark()
+float MultipleChoiceQuestion::GetUserMark()
 {
 	int k = 0;
+	int s = 0;
 	float ratio;
-	for (size_t i = 0; i < sra.size(); i++)
+	for (size_t i = 0; i < sua.size(); i++)
 	{
-		if (sra.at(i) == sua.at(i))
+		if (std::find(sra.begin(), sra.end(), sua.at(i)) != sra.end())
 		{
 			k++;
 		}
+		else
+		{
+			s++;
+		}
 	}
-	ratio = (float) k / sra.size();
+	ratio = (float) k / (sra.size() + s);
 	return mark * ratio;
+}
+
+void MultipleChoiceQuestion::SetManualAnswer(std::string s)
+{
 }

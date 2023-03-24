@@ -8,9 +8,12 @@
 class SectionsArray
 {
 	std::vector<std::unique_ptr<Sections>> sections;
-	int b = -1;
 
 public:
+	SectionsArray();
+	SectionsArray(SectionsArray& sa);
+	SectionsArray& operator=(const SectionsArray& sa);
+
 	void PushSection(std::string name);
 	void DeleteSection(int indexS);
 	void DeleteTest(int indexS, int indexT);
@@ -40,8 +43,5 @@ public:
 
 	void PushFullSection(std::unique_ptr<Sections>& section);
 	void PrintResults(int indexS, int indexT);
-
-	int GetB();
-	void SetB(int _b);
 };
 

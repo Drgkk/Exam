@@ -2,6 +2,7 @@
 #include <iostream>
 #include "UsersLogAndPas.h"
 #include "SectionsArray.h"
+#include "UserInterface.h"
 
 class Admin
 {
@@ -9,6 +10,7 @@ class Admin
 	std::string login;
 	std::string password;
 	SectionsArray* sa;
+	UserInterface* UI;
 
 public:
 	Admin();
@@ -60,5 +62,7 @@ public:
 	void ChangeNameQuestion();
 	void ChangeNameAnswer();
 	void ChangeMark();
+
+	void SetUI(UserInterface& _UI);
 };
 

@@ -8,6 +8,7 @@ class Test
 {
 	std::string testName;
 	std::vector<std::unique_ptr<Question>> questions;
+	bool hasPased = false;
 
 public:
 	void AddName(std::string name);
@@ -19,5 +20,8 @@ public:
 	void Print();
 	void PushQuestion(Question* questionType, std::string name);
 	std::string GetName();
+
+	bool GetHasPased();
+	void SetHasPased(bool _hasPased);
 };
 

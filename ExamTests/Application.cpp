@@ -8,6 +8,7 @@ Application::Application()
 	admin.AddUsers(users);
 	sa.Load();
 	admin.AddSections(sa);
+	admin.SetUI(UI);
 }
 
 void Application::Menu()
@@ -79,11 +80,12 @@ void Application::Login()
 		std::cout << "Welcome to the system user!\n";
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 		UI.AddUserLogAndPas(users);
-		UI.GetUser().WriteInformation(users.GetUsers().Brackets(k, 0), users.GetUsers().Brackets(k, 1), users.GetUsers().Brackets(k, 2), users.GetUsers().Brackets(k, 3), users.GetUsers().Brackets(k, 4), k);
-		UI.AddSectionsArray(sa);
+		//UI.GetUser().at(k)->WriteInformation(users.GetUsers().Brackets(k, 0), users.GetUsers().Brackets(k, 1), users.GetUsers().Brackets(k, 2), users.GetUsers().Brackets(k, 3), users.GetUsers().Brackets(k, 4));
+		UI.AddSectionsArray(sa, k);
+		UI.SetUIndex(k);
 		std::system("pause");
 		UI.Menu();
-		UI.GetUser().clear();
+		//UI.GetUser().clear();
 		return;
 	}
 	else
@@ -156,6 +158,8 @@ void Application::Register()
 
 		users.AddUser(a, b, c, d, e);
 		users.Save();
+		UI.AddUser(a, b, c, d, e);
+
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
 		std::cout << "You've been successfully registered as user!\n";
 		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);

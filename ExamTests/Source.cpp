@@ -66,6 +66,38 @@ int main()
 	//sa.Load();
 	//
 	//sa.Print();
+	
+	/*SectionsArray* sa1 =new SectionsArray;
+	sa1->PushSection("Section 1");
+	sa1->PushTest("Test 1", 0);
+	sa1->PushQuestion("Question 1", 0, 0, new OneChoiceQuestion);
+	sa1->PushAnswer("Answer 1", 0, 0, 0);
+
+	sa1->Print();
+
+	std::cout << "\n\n";
+
+	SectionsArray* sa2 = new SectionsArray;
+	*sa2 = *sa1;
+
+	sa1->Print();
+
+	std::cout << "\n\n";
+
+	sa2->Print();
+
+	std::cout << "\n\n";
+
+	sa1->PushSection("Section 2");
+	sa2->PushTest("Test 2", 0);
+
+	sa1->Print();
+
+	std::cout << "\n\n";
+
+	sa2->Print();
+
+	std::cout << "\n\n";*/
 
 	return 0;
 }

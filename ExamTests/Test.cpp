@@ -196,3 +196,13 @@ std::string Test::GetName()
 {
 	return testName;
 }
+
+bool Test::GetHasPased()
+{
+	return hasPased;
+}
+
+void Test::SetHasPased(bool _hasPased)
+{
+	hasPased = _hasPased;
+}

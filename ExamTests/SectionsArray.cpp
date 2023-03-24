@@ -4,6 +4,115 @@
 #include "Test.h"
 #include "Question.h"
 #include <bitset>
+#include "QuestionFactoryPattern.h"
+
+SectionsArray::SectionsArray()
+{
+}
+
+SectionsArray::SectionsArray(SectionsArray& sa)
+{
+	Creator* creator/* = new OneChoiceQuestionCreator*/;
+	Question* constr/* = creator->create()*/;
+	for (size_t i = 0; i < sa.sections.size(); i++)
+	{
+		this->PushSection(sa.sections.at(i)->GetName());
+		for (size_t j = 0; j < sa.sections.at(i)->GetTests().size(); j++)
+		{
+			this->PushTest(sa.sections.at(i)->GetTests().at(j)->GetName(), i);
+			this->GetSections().at(i)->GetTests().at(j)->SetHasPased(sa.sections.at(i)->GetTests().at(j)->GetHasPased());
+			for (size_t a = 0; a < sa.sections.at(i)->GetTests().at(j)->GetQuestions().size(); a++)
+			{
+				if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "OneChoiceQuestion")
+				{
+					creator = new OneChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetRightAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetRightAnswerSCQ());
+				}
+				else if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "MultipleChoiceQuestion")
+				{
+					creator = new MultipleChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					for (size_t u = 0; u < sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().size(); u++)
+					{
+						this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().at(u) = sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().at(u);
+					}
+					
+				}
+				else if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "ManualChoiceQuestion")
+				{
+					creator = new ManualChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetManualAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetRightAnswerMaCQ());
+				}
+				this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetMark(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetMark());
+				for (size_t b = 0; b < sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetAnswers().size(); b++)
+				{
+					this->PushAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetAnswers().at(b), i, j, a);
+				}
+			}
+		}
+	}
+
+}
+
+SectionsArray& SectionsArray::operator=(const SectionsArray& sa)
+{
+	if (this == &sa)
+		return *this;
+
+	Creator* creator/* = new OneChoiceQuestionCreator*/;
+	Question* constr/* = creator->create()*/;
+	for (size_t i = 0; i < sa.sections.size(); i++)
+	{
+		this->PushSection(sa.sections.at(i)->GetName());
+		for (size_t j = 0; j < sa.sections.at(i)->GetTests().size(); j++)
+		{
+			this->PushTest(sa.sections.at(i)->GetTests().at(j)->GetName(), i);
+			this->GetSections().at(i)->GetTests().at(j)->SetHasPased(sa.sections.at(i)->GetTests().at(j)->GetHasPased());
+			for (size_t a = 0; a < sa.sections.at(i)->GetTests().at(j)->GetQuestions().size(); a++)
+			{
+				if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "OneChoiceQuestion")
+				{
+					creator = new OneChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetRightAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetRightAnswerSCQ());
+				}
+				else if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "MultipleChoiceQuestion")
+				{
+					creator = new MultipleChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					for (size_t u = 0; u < sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().size(); u++)
+					{
+						this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().push_back(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetSRA().at(u));
+					}
+
+				}
+				else if (sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetType() == "ManualChoiceQuestion")
+				{
+					creator = new ManualChoiceQuestionCreator;
+					constr = creator->create();
+					this->PushQuestion(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName(), i, j, constr);
+					this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetManualAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetRightAnswerMaCQ());
+				}
+				this->GetSections().at(i)->GetTests().at(j)->GetQuestions().at(a)->SetMark(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetMark());
+				for (size_t b = 0; b < sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetAnswers().size(); b++)
+				{
+					this->PushAnswer(sa.sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetAnswers().at(b), i, j, a);
+				}
+			}
+		}
+	}
+
+
+
+	return *this;
+}
 
 void SectionsArray::PushSection(std::string name)
 {
@@ -203,22 +312,17 @@ void SectionsArray::PushFullSection(std::unique_ptr<Sections>& section)
 
 void SectionsArray::PrintResults(int indexS, int indexT)
 {
-
+	float totalMark = 0;
+	SetColor(ConsoleColor::Green, ConsoleColor::Black);
+	std::cout << sections.at(indexS)->GetTests().at(indexT)->GetName() << "\n";
+	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	for (size_t i = 0; i < sections.at(indexS)->GetTests().at(indexT)->GetQuestions().size(); i++)
 	{
 		std::cout << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetName() << " Mark: ";
 		std::cout << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetUserMark();
 		std::cout << "/" << sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetMark() << std::endl;
+		totalMark += sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(i)->GetUserMark();
 	}
-	
-}
-
-int SectionsArray::GetB()
-{
-	return b;
-}
-
-void SectionsArray::SetB(int _b)
-{
-	b = _b;
+	std::cout << "---------------------------------\n";
+	std::cout << "Total: " << totalMark << "/12\n";
 }

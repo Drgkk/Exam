@@ -31,7 +31,8 @@ public:
 	virtual std::string GetRightAnswerMaCQ() = 0;
 	virtual std::vector<int> GetRightAnswerMuCQ() = 0;
 
-	virtual int GetUserMark() = 0;
+	virtual float GetUserMark() = 0;
+	virtual void SetManualAnswer(std::string s) = 0;
 };
 
 
@@ -58,7 +59,8 @@ public:
 	virtual std::string GetRightAnswerMaCQ();
 	virtual std::vector<int> GetRightAnswerMuCQ();
 
-	virtual int GetUserMark();
+	virtual float GetUserMark();
+	virtual void SetManualAnswer(std::string s) override;
 };
 
 
@@ -66,8 +68,8 @@ public:
 
 class ManualChoiceQuestion : public Question
 {
-	std::string answer;
-	std::string uanswer;
+	std::string answer = " ";
+	std::string uanswer = " ";
 
 
 public:
@@ -84,7 +86,8 @@ public:
 	virtual std::string GetRightAnswerMaCQ();
 	virtual std::vector<int> GetRightAnswerMuCQ();
 
-	virtual int GetUserMark();
+	virtual float GetUserMark();
+	virtual void SetManualAnswer(std::string s) override;
 };
 
 
@@ -108,5 +111,6 @@ public:
 	virtual std::string GetRightAnswerMaCQ();
 	virtual std::vector<int> GetRightAnswerMuCQ();
 
-	virtual int GetUserMark();
+	virtual float GetUserMark();
+	virtual void SetManualAnswer(std::string s) override;
 };

@@ -43,5 +43,6 @@ public:
 
 	void PushFullSection(std::unique_ptr<Sections>& section);
 	void PrintResults(int indexS, int indexT);
+	void PrintAllResults();
 };
 

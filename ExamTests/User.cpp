@@ -46,10 +46,9 @@ SectionsArray* User::GetHSA()
 	return hsa;
 }
 
-void User::Copy()
+void User::Copy(SectionsArray& _sa)
 {
-	hsa->GetSections().clear();
-	*hsa = *sa;
+	*hsa = _sa;
 }
 
 void User::ModifyValueByIndex(int index, std::string s)

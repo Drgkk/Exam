@@ -20,7 +20,7 @@ public:
 	SectionsArray* GetSA();
 	SectionsArray* GetSSA();
 	SectionsArray* GetHSA();
-	void Copy();
+	void Copy(SectionsArray& _sa);
 	void ModifyValueByIndex(int index, std::string s);
 };
 

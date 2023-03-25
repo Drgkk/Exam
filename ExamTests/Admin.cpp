@@ -153,9 +153,18 @@ void Admin::Menu()
 		case 0: ManageTests(); break;
 		case 1: ManipulateUsers(); break;
 		case 2: ChangeLoginOrPassword(); break;
-		case 3:  break;
-		case 4: return; break;
-		case 5: std::exit(0); std::system("pause"); break;
+		case 3: SeeUsersStatistics(); break;
+		case 4:
+			if(SaveTests())
+				return;
+			break;
+		case 5:
+			if (SaveTests())
+			{
+				std::exit(0);
+				std::system("pause");
+			}
+			break;
 		}
 	}
 }
@@ -184,6 +193,14 @@ void Admin::ChangeLogin()
 	std::string s;
 	std::cout << "Enter your new login: ";
 	std::getline(std::cin, s);
+	if (s == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	if (users->FindLogin(s) != -1)
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -206,6 +223,14 @@ void Admin::ChangePassword()
 	std::string s;
 	std::cout << "Enter your old password: ";
 	std::getline(std::cin, s);
+	if (s == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	if (password != s)
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -216,9 +241,25 @@ void Admin::ChangePassword()
 	}
 	std::cout << "Enter your new password: ";
 	std::getline(std::cin, s);
+	if (s == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	std::string s2;
 	std::cout << "Repeat your new password: ";
 	std::getline(std::cin, s2);
+	if (s2 == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	if (s2 != s)
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -280,6 +321,14 @@ void Admin::CreateUser()
 
 		std::cout << "Enter your login: ";
 		std::getline(std::cin, a);
+		if (a == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		if (users->FindLogin(a) != -1 || login == a)
 		{
 			std::cout << "Login already exist, try again\n";
@@ -287,10 +336,34 @@ void Admin::CreateUser()
 		}
 		std::cout << "Enter your password: ";
 		std::getline(std::cin, b);
+		if (b == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		std::cout << "Enter your SNF: ";
 		std::getline(std::cin, c);
+		if (c == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		std::cout << "Enter your address: ";
 		std::getline(std::cin, d);
+		if (d == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		do
 		{
 			std::cout << "Enter your phone: ";
@@ -331,6 +404,8 @@ void Admin::CreateUser()
 		users->Save();
 
 		UI->AddUser(a, b, c, d, e);
+		UI->GetUser().at(UI->GetUser().size() - 1)->Copy(*sa);
+		UI->SaveHSA();
 
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
 		std::cout << "You've been successfully registered as user!\n";
@@ -395,6 +470,14 @@ void Admin::ModifyUser()
 	}
 	std::cout << "Enter the new value: ";
 	std::getline(std::cin, s);
+	if (s == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 
 	if (g == 1)
 	{
@@ -517,6 +600,7 @@ void Admin::AddSection()
 	std::cout << "Enter new senction name: ";
 	std::getline(std::cin, s);
 	sa->PushSection(s);
+	UI->PushSection(s);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Section has been succesfully added!" << "\n";
@@ -551,6 +635,7 @@ void Admin::AddTest()
 	std::getline(std::cin, s);
 
 	sa->PushTest(s, c);
+	UI->PushTest(s, c);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Test has been succesfully added!" << "\n";
@@ -641,6 +726,33 @@ void Admin::AddQuestion()
 	std::getline(std::cin, s);
 
 	sa->PushQuestion(s, a, b, constr);
+	
+	//UI->PushQuestion(s, a, b, constr);
+
+	for (size_t i = 0; i < UI->GetUser().size(); i++)
+	{
+		constr = creator->create();
+		std::unique_ptr<Question> temp(constr);
+		temp->SetNameQuestion(s);
+		UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetQuestions().push_back(std::move(temp));
+		if (UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetHasPased())
+		{
+			UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->SetHasPased(false);
+		}
+		if (UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetIsContinued())
+		{
+			UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->SetIsContinued(false);
+			for (size_t r = 0; r < UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetQuestions().size(); r++)
+			{
+				if (UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(r)->GetIsDone())
+				{
+					UI->GetUser().at(i)->GetHSA()->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(r)->SetIsDone(false);
+				}
+			}
+		}
+	}
+
+
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << u << " Question has been succesfully added!" << "\n";
@@ -712,6 +824,7 @@ void Admin::AddAnswer()
 	std::getline(std::cin, s);
 
 	sa->PushAnswer(s, a, b, c);
+	UI->PushAnswerU(s, a, b, c);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Answer has been succesfully added!" << "\n";
@@ -799,8 +912,13 @@ void Admin::AddRightAnswer()
 	}
 	else
 	{
+		std::string answer;
 		std::cout << "\n\n\t\t\t\t";
-		sa->SetRightAnswer(a, b, c, 0);
+		std::cout << "Enter the right answer: ";
+		std::getline(std::cin, answer);
+		/*sa->SetRightAnswer(a, b, c, 0);*/
+		sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->SetRightAnswerForMAQ(answer);
+		UI->SetRightAnswerForMAQ(answer, a, b, c);
 		std::system("cls");
 		SetColor(ConsoleColor::Green, ConsoleColor::Black);
 		std::cout << "Right Answer has been succesfully selected for Manual Choice Question!" << "\n";
@@ -819,6 +937,7 @@ void Admin::AddRightAnswer()
 		if (std::find(temp.begin(), temp.end(), d) != temp.end())
 		{
 			sa->DeleteRightAnswer(a, b, c, d);
+			UI->DeleteRightAnswer(a, b, c, d);
 			SetColor(ConsoleColor::Green, ConsoleColor::Black);
 			std::cout << "Right Answer has been succesfully deleted for Multi Choice Question!" << "\n";
 			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
@@ -829,6 +948,7 @@ void Admin::AddRightAnswer()
 		else
 		{
 			sa->SetRightAnswer(a, b, c, d);
+			UI->SetRightAnswer(a, b, c, d);
 			SetColor(ConsoleColor::Green, ConsoleColor::Black);
 			std::cout << "Right Answer has been succesfully selected for Multi Choice Question!" << "\n";
 			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
@@ -840,6 +960,7 @@ void Admin::AddRightAnswer()
 	else
 	{
 		sa->SetRightAnswer(a, b, c, d);
+		UI->SetRightAnswer(a, b, c, d);
 	}
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
@@ -873,7 +994,7 @@ void Admin::ChangeTests()
 	}
 }
 
-void Admin::SaveTests()
+bool Admin::SaveTests()
 {
 	int markSum = 0;
 	for (size_t i = 0; i < sa->GetSections().size(); i++)
@@ -890,18 +1011,20 @@ void Admin::SaveTests()
 				std::cout << "This cannot be saved! One of your tests has a total sum of marks not equal to 12, please fix it in order to save!" << "\n";
 				SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 				std::system("pause");
-				return;
+				return false;
 			}
 			markSum = 0;
 		}
 	}
 
 	sa->Save();
+	UI->SaveHSA();
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Tests have succesfully been saved!" << "\n";
 	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
 	std::system("pause");
+	return true;
 }
 
 void Admin::Delete()
@@ -953,6 +1076,7 @@ void Admin::DeleteSection()
 	std::system("cls");
 
 	sa->DeleteSection(a);
+	UI->DeleteSection(a);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Section has been succesfully deleted!" << "\n";
@@ -1004,6 +1128,7 @@ void Admin::DeleteTest()
 	std::system("cls");
 	
 	sa->DeleteTest(a, b);
+	UI->DeleteTest(a, b);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Test has been succesfully deleted!" << "\n";
@@ -1074,6 +1199,7 @@ void Admin::DeleteQuestion()
 	std::system("cls");
 
 	sa->DeleteQuestion(a, b, c);
+	UI->DeleteQuestion(a, b, c);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Question has been succesfully deleted!" << "\n";
@@ -1161,6 +1287,7 @@ void Admin::DeleteAnswer()
 	std::system("cls");
 
 	sa->DeleteAnswer(a, b, c, d);
+	UI->DeleteAnswer(a, b, c, d);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Answer has been succesfully deleted!" << "\n";
@@ -1223,6 +1350,7 @@ void Admin::ChangeNameSection()
 	std::getline(std::cin, name);
 
 	sa->GetSections().at(a)->AddName(name);
+	UI->ChangeSectionName(name, a);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Section name has been succesfully changed!" << "\n";
@@ -1275,6 +1403,7 @@ void Admin::ChangeNameTest()
 	std::getline(std::cin, name);
 
 	sa->GetSections().at(a)->GetTests().at(b)->AddName(name);
+	UI->ChangeTestName(name, a, b);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Section name has been succesfully changed!" << "\n";
@@ -1345,6 +1474,7 @@ void Admin::ChangeNameQuestion()
 	std::getline(std::cin, name);
 
 	sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->SetNameQuestion(name);
+	UI->ChangeQuestionName(name, a, b, c);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Question name has been succesfully changed!" << "\n";
@@ -1433,6 +1563,7 @@ void Admin::ChangeNameAnswer()
 	std::getline(std::cin, name);
 
 	sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->GetAnswers().at(d) = name;
+	UI->ChangeAnswerName(name, a, b, c, d);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Answer name has been succesfully changed!" << "\n";
@@ -1504,6 +1635,7 @@ void Admin::ChangeMark()
 	cin.ignore();
 
 	sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->SetMark(m);
+	UI->ChangeMark(a, b, c, m);
 
 	SetColor(ConsoleColor::Green, ConsoleColor::Black);
 	std::cout << "Mark has been succesfully changed!" << "\n";
@@ -1515,5 +1647,33 @@ void Admin::ChangeMark()
 void Admin::SetUI(UserInterface& _UI)
 {
 	UI = &_UI;
+}
+
+void Admin::SeeUsersStatistics()
+{
+	std::vector<std::string> menu;
+	SetColor(ConsoleColor::Green, ConsoleColor::Black);
+	std::cout << "\n\n\t\t\t\Choose user to show its statistics: ";
+	SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+	for (size_t i = 0; i < UI->GetUser().size(); i++)
+	{
+		menu.push_back(UI->GetUser().at(i)->GetUserInformation(0));
+	}
+	menu.push_back("Cancel");
+	int a = Menu::select_vertical(menu, HorizontalAlignment::Center, 4);
+
+	menu.clear();
+
+	if (a == UI->GetUser().size())
+	{
+		return;
+	}
+
+	system("cls");
+
+	std::cout << UI->GetUser().at(a)->GetUserInformation(0) << ":\n";
+	UI->GetUser().at(a)->GetHSA()->PrintAllResults();
+	std::cout << std::endl;
+	std::system("pause");
 }
 

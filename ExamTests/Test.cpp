@@ -3,6 +3,7 @@
 #include <iostream>
 #include <bitset>
 #include "QuestionFactoryPattern.h"
+#include <string>
 
 void Test::AddName(std::string name)
 {
@@ -33,6 +34,28 @@ void Test::Save(std::ofstream& out)
 	}
 
 	s = "Ttyghbnuijkm";
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
+	if (hasPased)
+		s = std::to_string(1);
+	else
+		s = std::to_string(0);
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
+	if (isContinued)
+		s = std::to_string(1);
+	else
+		s = std::to_string(0);
 
 	for (size_t j = 0; j < s.length(); j++)
 	{
@@ -150,6 +173,57 @@ void Test::Load(std::ifstream& in)
 		}
 		else if (s == "Ttyghbnuijkm")
 		{
+
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
+			if (stoi(s) == 1)
+				hasPased = true;
+			else
+				hasPased = false;
+
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
+			if (stoi(s) == 1)
+				isContinued = true;
+			else
+				isContinued = false;
+
 			return;
 		}
 
@@ -205,4 +279,14 @@ bool Test::GetHasPased()
 void Test::SetHasPased(bool _hasPased)
 {
 	hasPased = _hasPased;
+}
+
+bool Test::GetIsContinued()
+{
+	return isContinued;
+}
+
+void Test::SetIsContinued(bool _isContinued)
+{
+	isContinued = _isContinued;
 }

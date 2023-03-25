@@ -121,6 +121,17 @@ void OneChoiceQuestion::Save(std::ofstream& out)
 		out << std::bitset<8>(s[j]);
 	}
 	out << std::endl;
+
+	if (isDone)
+		s = std::to_string(1);
+	else
+		s = std::to_string(0);
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
 }
 
 void OneChoiceQuestion::SetUserAnswer(int _ua, std::string s, std::vector<int> _sua)
@@ -227,6 +238,36 @@ void OneChoiceQuestion::Load(std::ifstream& in)
 
 			mark = std::stoi(s);
 
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
+			if (std::stoi(s) == 1)
+			{
+				isDone = true;
+			}
+			else
+			{
+				isDone = false;
+			}
+
 			return;
 		}
 
@@ -285,6 +326,10 @@ float OneChoiceQuestion::GetUserMark()
 }
 
 void OneChoiceQuestion::SetManualAnswer(std::string s)
+{
+}
+
+void OneChoiceQuestion::SetRightAnswerForMAQ(std::string s)
 {
 }
 
@@ -368,6 +413,17 @@ void ManualChoiceQuestion::Save(std::ofstream& out)
 	out << std::endl;
 
 	s = std::to_string(mark);
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
+
+	if (isDone)
+		s = std::to_string(1);
+	else
+		s = std::to_string(0);
 
 	for (size_t j = 0; j < s.length(); j++)
 	{
@@ -475,6 +531,37 @@ void ManualChoiceQuestion::Load(std::ifstream& in)
 
 			mark = stoi(s);
 
+
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
+			if (stoi(s) == 1)
+			{
+				isDone = true;
+			}
+			else
+			{
+				isDone = false;
+			}
+
 			return;
 		}
 
@@ -534,6 +621,11 @@ float ManualChoiceQuestion::GetUserMark()
 }
 
 void ManualChoiceQuestion::SetManualAnswer(std::string s)
+{
+	answer = s;
+}
+
+void ManualChoiceQuestion::SetRightAnswerForMAQ(std::string s)
 {
 	answer = s;
 }
@@ -652,6 +744,17 @@ void MultipleChoiceQuestion::Save(std::ofstream& out)
 		out << std::bitset<8>(s[j]);
 	}
 	out << std::endl;
+
+	if (isDone)
+		s = std::to_string(1);
+	else
+		s = std::to_string(0);
+
+	for (size_t j = 0; j < s.length(); j++)
+	{
+		out << std::bitset<8>(s[j]);
+	}
+	out << std::endl;
 }
 
 void MultipleChoiceQuestion::Load(std::ifstream& in)
@@ -764,6 +867,36 @@ void MultipleChoiceQuestion::Load(std::ifstream& in)
 
 			mark = stoi(s);
 
+			s.clear();
+			a.clear();
+			t = 0;
+			ti = 0;
+			delete[] temp;
+			temp = new char[9];
+			ts.clear();
+
+			in >> s;
+
+			while (t < s.size())
+			{
+				s.copy(temp, 8, t);
+				t += 8;
+				temp[8] = '\0';
+				unsigned long t2 = std::bitset<8>(temp).to_ulong();
+				ts = (char)t2;
+				a.append(ts);
+			}
+			s = a;
+
+			if (stoi(s) == 1)
+			{
+				isDone = true;
+			}
+			else
+			{
+				isDone = false;
+			}
+
 			return;
 		}
 
@@ -835,4 +968,18 @@ float MultipleChoiceQuestion::GetUserMark()
 
 void MultipleChoiceQuestion::SetManualAnswer(std::string s)
 {
+}
+
+void MultipleChoiceQuestion::SetRightAnswerForMAQ(std::string s)
+{
+}
+
+bool Question::GetIsDone()
+{
+	return isDone;
+}
+
+void Question::SetIsDone(bool _isDone)
+{
+	isDone = _isDone;
 }

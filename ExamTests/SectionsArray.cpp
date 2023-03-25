@@ -172,7 +172,7 @@ void SectionsArray::PushQuestion(std::string name, int indexS, int indexT, Quest
 
 void SectionsArray::PushAnswer(std::string name, int indexS, int indexT, int indexQ)
 {
-	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetAnswers().push_back(std::move(name));
+	sections.at(indexS)->GetTests().at(indexT)->GetQuestions().at(indexQ)->GetAnswers().push_back(name);
 }
 
 void SectionsArray::SetRightAnswer(int indexS, int indexT, int indexQ, int _ra)
@@ -325,4 +325,24 @@ void SectionsArray::PrintResults(int indexS, int indexT)
 	}
 	std::cout << "---------------------------------\n";
 	std::cout << "Total: " << totalMark << "/12\n";
+}
+
+void SectionsArray::PrintAllResults()
+{
+	for (size_t i = 0; i < sections.size(); i++)
+	{
+		std::cout << sections.at(i)->GetName() << "\n";
+		for (size_t j = 0; j < sections.at(i)->GetTests().size(); j++)
+		{
+			if (sections.at(i)->GetTests().at(j)->GetHasPased())
+			{
+				std::cout << "|----" << sections.at(i)->GetTests().at(j)->GetName() << "\n";
+				for (size_t a = 0; a < sections.at(i)->GetTests().at(j)->GetQuestions().size(); a++)
+				{
+					std::cout << "    |----" << sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetName() << " " << sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetUserMark() << "/" << sections.at(i)->GetTests().at(j)->GetQuestions().at(a)->GetMark() << "\n";
+
+				}
+			}
+		}
+	}
 }

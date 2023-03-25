@@ -9,6 +9,7 @@ class Test
 	std::string testName;
 	std::vector<std::unique_ptr<Question>> questions;
 	bool hasPased = false;
+	bool isContinued = false;
 
 public:
 	void AddName(std::string name);
@@ -23,5 +24,8 @@ public:
 
 	bool GetHasPased();
 	void SetHasPased(bool _hasPased);
+
+	bool GetIsContinued();
+	void SetIsContinued(bool _isContinued);
 };
 

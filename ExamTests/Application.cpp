@@ -9,6 +9,8 @@ Application::Application()
 	sa.Load();
 	admin.AddSections(sa);
 	admin.SetUI(UI);
+	UI.LoadUserInformation();
+	UI.LoadHSA();
 }
 
 void Application::Menu()
@@ -109,17 +111,52 @@ void Application::Register()
 
 		std::cout << "Enter your login: ";
 		std::getline(std::cin, a);
+		if (a == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		if (users.FindLogin(a) != -1 || admin.GetLogin() == a)
 		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
 			std::cout << "Login already exist, try again\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
 			continue;
 		}
 		std::cout << "Enter your password: ";
 		std::getline(std::cin, b);
+		if (b == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		std::cout << "Enter your SNF: ";
 		std::getline(std::cin, c);
+		if (c == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		std::cout << "Enter your address: ";
 		std::getline(std::cin, d);
+		if (d == "")
+		{
+			SetColor(ConsoleColor::Red, ConsoleColor::Black);
+			std::cout << "Null value! Try again!\n";
+			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+			std::system("pause");
+			return;
+		}
 		do
 		{
 			std::cout << "Enter your phone: ";
@@ -159,6 +196,8 @@ void Application::Register()
 		users.AddUser(a, b, c, d, e);
 		users.Save();
 		UI.AddUser(a, b, c, d, e);
+		UI.GetUser().at(UI.GetUser().size() - 1)->Copy(sa);
+		UI.SaveHSA();
 
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
 		std::cout << "You've been successfully registered as user!\n";
@@ -181,9 +220,25 @@ void Application::RegisterAdmin()
 	std::string a;
 	std::cout << "Enter your login: ";
 	std::getline(std::cin, a);
+	if (a == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	admin.SetLogin(a);
 	std::cout << "Enter your password: ";
 	std::getline(std::cin, a);
+	if (a == "")
+	{
+		SetColor(ConsoleColor::Red, ConsoleColor::Black);
+		std::cout << "Null value! Try again!\n";
+		SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
+		std::system("pause");
+		return;
+	}
 	admin.SetPassword(a);
 	admin.Save();
 	SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);

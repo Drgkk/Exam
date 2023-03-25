@@ -9,6 +9,7 @@ protected:
 	std::string questionName;
 	std::vector<std::string> answers;
 	int mark = 0;
+	bool isDone = false;
 
 public:
 	void SetNameQuestion(std::string name);
@@ -33,6 +34,11 @@ public:
 
 	virtual float GetUserMark() = 0;
 	virtual void SetManualAnswer(std::string s) = 0;
+
+	virtual void SetRightAnswerForMAQ(std::string s) = 0;
+
+	bool GetIsDone();
+	void SetIsDone(bool _isDone);
 };
 
 
@@ -61,6 +67,7 @@ public:
 
 	virtual float GetUserMark();
 	virtual void SetManualAnswer(std::string s) override;
+	virtual void SetRightAnswerForMAQ(std::string s) override;
 };
 
 
@@ -88,6 +95,7 @@ public:
 
 	virtual float GetUserMark();
 	virtual void SetManualAnswer(std::string s) override;
+	virtual void SetRightAnswerForMAQ(std::string s) override;
 };
 
 
@@ -113,4 +121,5 @@ public:
 
 	virtual float GetUserMark();
 	virtual void SetManualAnswer(std::string s) override;
+	virtual void SetRightAnswerForMAQ(std::string s) override;
 };

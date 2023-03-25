@@ -48,7 +48,7 @@ public:
 	void AddRightAnswer();
 
 	void ChangeTests();
-	void SaveTests();
+	bool SaveTests();
 
 	void Delete();
 	void DeleteSection();
@@ -64,5 +64,7 @@ public:
 	void ChangeMark();
 
 	void SetUI(UserInterface& _UI);
+
+	void SeeUsersStatistics();
 };
 

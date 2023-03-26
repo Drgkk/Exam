@@ -46,7 +46,31 @@ void Application::Login()
 	if (admin.GetLogin() == a)
 	{
 		std::cout << "You're trying to enter admin account, please enter password: ";
-		std::getline(std::cin, a);
+		//std::getline(std::cin, a);
+
+		char helpCh;
+		
+
+		a.clear();
+
+		while ((helpCh = _getch()) != '\r')
+		{
+			if (helpCh == '\b') // if backspace is pressed
+			{
+				if (!a.empty()) // if the string is not empty
+				{
+					a.pop_back(); // remove the last character from the string
+					cout << "\b \b"; // erase the last * from the console output
+				}
+			}
+			else // otherwise
+			{
+				a += helpCh; // append the character to the string
+				cout << "*"; // print a * instead of the character
+			}
+		}
+		cout << endl;
+
 		if (admin.GetPassword() == a)
 		{
 			SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
@@ -75,7 +99,31 @@ void Application::Login()
 		return;
 	}
 	std::cout << "Enter your password: ";
-	std::getline(std::cin, a);
+	//std::getline(std::cin, a);
+
+	char helpCh;
+
+
+	a.clear();
+
+	while ((helpCh = _getch()) != '\r')
+	{
+		if (helpCh == '\b') // if backspace is pressed
+		{
+			if (!a.empty()) // if the string is not empty
+			{
+				a.pop_back(); // remove the last character from the string
+				cout << "\b \b"; // erase the last * from the console output
+			}
+		}
+		else // otherwise
+		{
+			a += helpCh; // append the character to the string
+			cout << "*"; // print a * instead of the character
+		}
+	}
+	cout << endl;
+
 	if (a == users.GetUsers().Brackets(k, 1))
 	{
 		SetColor(ConsoleColor::LightGreen, ConsoleColor::Black);
@@ -124,11 +172,36 @@ void Application::Register()
 			SetColor(ConsoleColor::Red, ConsoleColor::Black);
 			std::cout << "Login already exist, try again\n";
 			SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
-			std::system("pause");
+			//std::system("pause");
 			continue;
 		}
+
 		std::cout << "Enter your password: ";
-		std::getline(std::cin, b);
+		//std::getline(std::cin, b);
+
+		char helpCh;
+
+
+		b.clear();
+
+		while ((helpCh = _getch()) != '\r')
+		{
+			if (helpCh == '\b') // if backspace is pressed
+			{
+				if (!b.empty()) // if the string is not empty
+				{
+					b.pop_back(); // remove the last character from the string
+					cout << "\b \b"; // erase the last * from the console output
+				}
+			}
+			else // otherwise
+			{
+				b += helpCh; // append the character to the string
+				cout << "*"; // print a * instead of the character
+			}
+		}
+		cout << endl;
+
 		if (b == "")
 		{
 			SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -230,7 +303,31 @@ void Application::RegisterAdmin()
 	}
 	admin.SetLogin(a);
 	std::cout << "Enter your password: ";
-	std::getline(std::cin, a);
+	//std::getline(std::cin, a);
+
+	char helpCh;
+
+
+	a.clear();
+
+	while ((helpCh = _getch()) != '\r')
+	{
+		if (helpCh == '\b')
+		{
+			if (!a.empty())
+			{
+				a.pop_back();
+				cout << "\b \b";
+			}
+		}
+		else
+		{
+			a += helpCh;
+			cout << "*";
+		}
+	}
+	cout << endl;
+
 	if (a == "")
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);

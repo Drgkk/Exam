@@ -19,7 +19,7 @@ enum HorizontalAlignment
 class Menu
 {
 public:
-	static int select_vertical(vector <string> menu, HorizontalAlignment ha, int y = 12)
+	static int select_vertical(vector <string> menu, HorizontalAlignment ha, int y = 12, std::vector<int> ua = std::vector<int>())
 	{
 		HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_SCREEN_BUFFER_INFO start_attribute;
@@ -52,6 +52,8 @@ public:
 					gotoxy(x, y + i);
 					cout << setw(maxLen) << left;
 					gotoxy(x, y + i);
+					if (std::find(ua.begin(), ua.end(), i) != ua.end())
+						SetColor(ConsoleColor::Green, backColor);
 					cout << menu[i] << endl;
 					SetColor(backColor, textColor);
 				}
@@ -61,6 +63,8 @@ public:
 					gotoxy(x, y + i);
 					cout << setw(maxLen) << left;
 					gotoxy(x, y + i);
+					if (std::find(ua.begin(), ua.end(), i) != ua.end())
+						SetColor(ConsoleColor::Green, ConsoleColor::Black);
 					cout << menu[i] << endl;
 					SetColor(textColor, backColor);
 				}

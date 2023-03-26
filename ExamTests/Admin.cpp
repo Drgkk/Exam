@@ -222,7 +222,31 @@ void Admin::ChangePassword()
 {
 	std::string s;
 	std::cout << "Enter your old password: ";
-	std::getline(std::cin, s);
+	//std::getline(std::cin, s);
+
+	char helpCh;
+
+
+	s.clear();
+
+	while ((helpCh = _getch()) != '\r')
+	{
+		if (helpCh == '\b')
+		{
+			if (!s.empty())
+			{
+				s.pop_back();
+				cout << "\b \b";
+			}
+		}
+		else
+		{
+			s += helpCh;
+			cout << "*";
+		}
+	}
+	cout << endl;
+
 	if (s == "")
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -240,7 +264,29 @@ void Admin::ChangePassword()
 		return;
 	}
 	std::cout << "Enter your new password: ";
-	std::getline(std::cin, s);
+	//std::getline(std::cin, s);
+
+
+	s.clear();
+
+	while ((helpCh = _getch()) != '\r')
+	{
+		if (helpCh == '\b')
+		{
+			if (!s.empty())
+			{
+				s.pop_back();
+				cout << "\b \b";
+			}
+		}
+		else
+		{
+			s += helpCh;
+			cout << "*";
+		}
+	}
+	cout << endl;
+
 	if (s == "")
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -251,7 +297,28 @@ void Admin::ChangePassword()
 	}
 	std::string s2;
 	std::cout << "Repeat your new password: ";
-	std::getline(std::cin, s2);
+	//std::getline(std::cin, s2);
+
+	s2.clear();
+
+	while ((helpCh = _getch()) != '\r')
+	{
+		if (helpCh == '\b')
+		{
+			if (!s2.empty())
+			{
+				s2.pop_back();
+				cout << "\b \b";
+			}
+		}
+		else
+		{
+			s2 += helpCh;
+			cout << "*";
+		}
+	}
+	cout << endl;
+
 	if (s2 == "")
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -335,7 +402,31 @@ void Admin::CreateUser()
 			continue;
 		}
 		std::cout << "Enter your password: ";
-		std::getline(std::cin, b);
+		//std::getline(std::cin, b);
+
+		char helpCh;
+
+
+		b.clear();
+
+		while ((helpCh = _getch()) != '\r')
+		{
+			if (helpCh == '\b')
+			{
+				if (!b.empty())
+				{
+					b.pop_back();
+					cout << "\b \b";
+				}
+			}
+			else
+			{
+				b += helpCh;
+				cout << "*";
+			}
+		}
+		cout << endl;
+
 		if (b == "")
 		{
 			SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -469,7 +560,34 @@ void Admin::ModifyUser()
 		return;
 	}
 	std::cout << "Enter the new value: ";
-	std::getline(std::cin, s);
+	if (g == 2)
+	{
+		char helpCh;
+
+
+		s.clear();
+
+		while ((helpCh = _getch()) != '\r')
+		{
+			if (helpCh == '\b')
+			{
+				if (!s.empty())
+				{
+					s.pop_back();
+					cout << "\b \b";
+				}
+			}
+			else
+			{
+				s += helpCh;
+				cout << "*";
+			}
+		}
+		cout << endl;
+	}
+	else
+		std::getline(std::cin, s);
+
 	if (s == "")
 	{
 		SetColor(ConsoleColor::Red, ConsoleColor::Black);
@@ -906,7 +1024,10 @@ void Admin::AddRightAnswer()
 			menu.push_back(sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->GetAnswers().at(i));
 		}
 		menu.push_back("Cancel");
-		d = Menu::select_vertical(menu, HorizontalAlignment::Center, 4);
+		if(sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->GetType() != "MultipleChoiceQuestion")
+			d = Menu::select_vertical(menu, HorizontalAlignment::Center, 4);
+		else
+			d = Menu::select_vertical(menu, HorizontalAlignment::Center, 4, sa->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(c)->GetRightAnswerMuCQ());
 
 		menu.clear();
 	}

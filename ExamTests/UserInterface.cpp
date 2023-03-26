@@ -191,7 +191,7 @@ void UserInterface::DoTest()
 				SetColor(ConsoleColor::Green, ConsoleColor::Black);
 				std::cout << "\n\n\t\t\t\t" << user.at(uIndex)->GetSA()->GetSections().at(a)->GetTests().at(b)->GetQuestions().at(i)->GetName();
 				SetColor(ConsoleColor::LightGray, ConsoleColor::Black);
-				cT = Menu::select_vertical(menu, HorizontalAlignment::Center, 4);
+				cT = Menu::select_vertical(menu, HorizontalAlignment::Center, 4, c);
 				if (cT == user.at(uIndex)->GetSA()->GetQuestion(a, b, i)->GetAnswers().size())
 				{
 					break;
